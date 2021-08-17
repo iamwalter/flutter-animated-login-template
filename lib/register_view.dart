@@ -8,41 +8,53 @@ class RegisterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 5,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 32.0),
-                    child: Text(
-                      "Welcome back",
-                      style: loginStyle,
+      body: SingleChildScrollView(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 32.0),
+                        child: Text(
+                          "Welcome Back",
+                          style: loginStyle,
+                        ),
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                  ],
                 ),
-                Expanded(child: Container()),
-              ],
-            ),
+              ),
+              Expanded(child: WaveAnimation()),
+              Expanded(
+                flex: 5,
+                child: Container(
+                  color: Colors.white,
+                  child: RegisterForm(),
+                ),
+              ),
+            ],
           ),
-          Expanded(child: WaveAnimation()),
-          Expanded(
-            flex: 5,
-            child: Container(
-              color: Colors.white,
-              child: RegisterForm(),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -118,19 +130,25 @@ class _RegisterFormState extends State<RegisterForm> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    StringButton(
-                      onPressed: () => print("login"),
-                      title: "Log in",
+                    Expanded(
+                      child: StringButton(
+                        onPressed: () => print("login"),
+                        title: "Log in",
+                      ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-                      child: _buildAwesomeDivider("or"),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+                        child: _buildAwesomeDivider("or"),
+                      ),
                     ),
-                    StringButton(
-                      backgroundColor: Colors.white,
-                      textColor: Colors.grey,
-                      onPressed: () => print("Sign Up"),
-                      title: "Sign up",
+                    Expanded(
+                      child: StringButton(
+                        backgroundColor: Colors.white,
+                        textColor: Colors.grey,
+                        onPressed: () => print("Sign Up"),
+                        title: "Sign up",
+                      ),
                     ),
                   ],
                 ),

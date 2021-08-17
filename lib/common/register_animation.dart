@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -13,15 +14,15 @@ class _WaveAnimationState extends State<WaveAnimation>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
   late final Tween<double> _piTween = Tween<double>(
-    begin: -pi,
-    end: pi,
+    begin: -math.pi,
+    end: math.pi,
   );
   late final Animation<double> animation;
 
   @override
   void initState() {
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration: Duration(seconds: 8));
 
     animation = _piTween.animate(_animationController)
       ..addListener(() {
@@ -29,7 +30,7 @@ class _WaveAnimationState extends State<WaveAnimation>
       })
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          _animationController.repeat();
+          _animationController.forward(from: -math.pi);
         } else if (status == AnimationStatus.dismissed) {
           _animationController.forward();
         }
@@ -41,14 +42,49 @@ class _WaveAnimationState extends State<WaveAnimation>
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: CustomPaint(
-        child: Container(),
-        painter: WavePainter(position: animation.value),
+    return RotatedBox(
+      quarterTurns: 2,
+      child: ClipPath(
+        clipper: WaveClipper(position: animation.value),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Container(
+          color: Colors.white,
+        ),
       ),
     );
+  }
+}
+
+class WaveClipper extends CustomClipper<Path> {
+  final double position;
+
+  WaveClipper({required this.position});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+
+    for (double x = 0; x < size.width; x++) {
+      final y = math.sin(0.02 * x + position) * 20 + size.height / 2;
+
+      path.lineTo(x, y);
+    }
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant WaveClipper oldClipper) {
+    return oldClipper.position != position;
   }
 }
 
@@ -61,28 +97,17 @@ class WavePainter extends CustomPainter {
 
   @override
   void paint(Canvas c, Size size) {
-    final _paint = Paint()..color = Colors.orange;
-    final w = size.width;
-    final h = size.height / 2;
-    final f = 1;
+    final paint = Paint()
+      ..color = Colors.blue
+      ..strokeWidth = 10;
+    final points = <Offset>[];
 
-    double calcSineY(x) {
-      return h - h * sin(x * 2 * pi * (f / w));
+    for (double x = 0; x < size.width; x++) {
+      final y = math.sin(0.02 * x + position) * 20 + size.height / 2;
+      points.add(Offset(x, y));
     }
 
-    final path = Path();
-    path.moveTo(0, h);
-    path.lineTo(w, h);
-    c.drawPath(path, _paint);
-    path.reset();
-    path.moveTo(0, h);
-    for (double i = 0; i < 200; i++) {
-      var y = calcSineY(position);
-      path.moveTo(i, y);
-      path.lineTo(i, y);
-    }
-
-    c.drawPath(path, _paint);
+    c.drawPoints(PointMode.polygon, points, paint);
   }
 
   @override
