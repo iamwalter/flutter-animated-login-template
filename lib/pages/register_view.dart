@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:testappnumbertwo/common/scale_expanded_widget.dart';
 import 'package:testappnumbertwo/common/string_button.dart';
-import 'common/register_animation.dart';
+import 'package:testappnumbertwo/pages/components/divider_with_text.dart';
+import 'components/register_animation.dart';
 import 'style.dart';
 
 class RegisterView extends StatelessWidget {
@@ -18,6 +20,7 @@ class RegisterView extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
+        // physics: FixedExtentScrollPhysics(),
         child: Container(
           width: size.width,
           height: size.height,
@@ -49,7 +52,7 @@ class RegisterView extends StatelessWidget {
                 flex: 5,
                 child: Container(
                   color: Colors.white,
-                  child: RegisterForm(),
+                  child: ScaleExpandedWidget(child: RegisterForm()),
                 ),
               ),
             ],
@@ -70,30 +73,6 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
 
-  Widget _buildAwesomeDivider(String text) {
-    return Row(
-      children: [
-        Expanded(
-            flex: 3,
-            child: Divider(
-              thickness: 3,
-            )),
-        Expanded(
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Divider(
-            thickness: 3,
-          ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -101,6 +80,7 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(32.0, 16, 32, 16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             TextFormField(
               decoration: const InputDecoration(
@@ -124,35 +104,21 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: StringButton(
-                        onPressed: () => print("login"),
-                        title: "Log in",
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-                        child: _buildAwesomeDivider("or"),
-                      ),
-                    ),
-                    Expanded(
-                      child: StringButton(
-                        backgroundColor: Colors.white,
-                        textColor: Colors.grey,
-                        onPressed: () => print("Sign Up"),
-                        title: "Sign up",
-                      ),
-                    ),
-                  ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                StringButton(
+                  onPressed: () => print("login"),
+                  title: "Log in",
                 ),
-              ),
+                TextDivider(text: "or"),
+                StringButton(
+                  backgroundColor: Colors.white,
+                  textColor: Colors.grey,
+                  onPressed: () => print("Sign Up"),
+                  title: "Sign up",
+                ),
+              ],
             ),
           ],
         ),

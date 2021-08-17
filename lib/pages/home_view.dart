@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:testappnumbertwo/register_view.dart';
-import 'common/string_button.dart';
+import 'package:testappnumbertwo/pages/register_view.dart';
+import '../common/string_button.dart';
 import 'style.dart';
 
 class LoginView extends StatelessWidget {

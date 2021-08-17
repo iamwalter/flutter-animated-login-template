@@ -76,6 +76,7 @@ class WaveClipper extends CustomClipper<Path> {
 
       path.lineTo(x, y);
     }
+
     path.lineTo(size.width, 0);
     path.lineTo(0, 0);
     path.close();
