@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:testappnumbertwo/pages/login_view.dart';
 import 'package:testappnumbertwo/pages/register_view.dart';
 import '../common/string_button.dart';
-import 'style.dart';
+import 'components/style.dart';
 
-class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+class HomeView extends StatelessWidget {
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,14 @@ class LoginView extends StatelessWidget {
               backgroundColor: Colors.white,
               textColor: Colors.blue,
               title: "Log In",
-              onPressed: () => print("login pressed"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginView(),
+                  ),
+                );
+              },
             ),
             SizedBox(
               height: 10,
@@ -55,53 +63,16 @@ class LoginView extends StatelessWidget {
             StringButton(
               title: "Sign Up",
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => RegisterView()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RegisterView(),
+                  ),
+                );
               },
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
-
-  @override
-  _LoginFormState createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<LoginForm> {
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 32.0, right: 32.0),
-            child: TextFormField(
-              autofillHints: ["password"],
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please Enter some text';
-                }
-                return null;
-              },
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) print("valid");
-            },
-            child: Text("button"),
-          )
-        ],
       ),
     );
   }
