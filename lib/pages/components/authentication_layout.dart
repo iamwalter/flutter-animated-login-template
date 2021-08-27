@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:testappnumbertwo/blocs/authentiction_bloc.dart';
 import 'package:testappnumbertwo/common/scale_expanded_widget.dart';
 import 'package:testappnumbertwo/pages/components/register_animation.dart';
 import 'package:testappnumbertwo/pages/components/style.dart';
